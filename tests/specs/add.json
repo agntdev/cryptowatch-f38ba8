@@ -1,0 +1,20 @@
+[
+  {
+    "name": "/add",
+    "steps": [
+      {
+        "expect": [
+          {
+            "method": "sendMessage",
+            "payload": {
+              "text": "Add a coin to the watchlist"
+            }
+          }
+        ],
+        "send": {
+          "text": "/add"
+        }
+      }
+    ]
+  }
+]
