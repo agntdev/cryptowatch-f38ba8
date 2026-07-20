@@ -1,19 +1,65 @@
 [
   {
-    "name": "/setthreshold",
+    "name": "/setthreshold without arguments shows usage",
     "steps": [
       {
+        "send": { "text": "/setthreshold" },
         "expect": [
           {
             "method": "sendMessage",
             "payload": {
-              "text": "Set a price threshold alert for a coin"
+              "text": "To set a price alert, type:\n/setthreshold BTC 100000\n/setthreshold ETH 5000"
             }
           }
-        ],
-        "send": {
-          "text": "/setthreshold"
-        }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "/setthreshold with invalid price shows error",
+    "steps": [
+      {
+        "send": { "text": "/setthreshold BTC abc" },
+        "expect": [
+          {
+            "method": "sendMessage",
+            "payload": {
+              "text": "Please enter a valid price number."
+            }
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "/setthreshold for coin not on watchlist shows not found",
+    "steps": [
+      {
+        "send": { "text": "/setthreshold BTC 100000" },
+        "expect": [
+          {
+            "method": "sendMessage",
+            "payload": {
+              "text": "BTC isn't on your watchlist. Add it first with /add BTC."
+            }
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "Set alert menu button shows usage",
+    "steps": [
+      {
+        "send": { "callback": "setthreshold:show" },
+        "expect": [
+          {
+            "method": "editMessageText",
+            "payload": {
+              "text": "To set a price alert, type:\n/setthreshold BTC 100000\n/setthreshold ETH 5000"
+            }
+          }
+        ]
       }
     ]
   }

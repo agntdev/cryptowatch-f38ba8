@@ -1,19 +1,65 @@
 [
   {
-    "name": "/quiet",
+    "name": "/quiet without arguments shows current and usage",
     "steps": [
       {
+        "send": { "text": "/quiet" },
         "expect": [
           {
             "method": "sendMessage",
             "payload": {
-              "text": "Set quiet hours"
+              "text": "Current quiet hours: 22:00–08:00\n\nTo set quiet hours, type:\n/quiet 22 08\n\nThis suppresses alerts from 22:00 to 08:00."
             }
           }
-        ],
-        "send": {
-          "text": "/quiet"
-        }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "/quiet with invalid hours shows error",
+    "steps": [
+      {
+        "send": { "text": "/quiet 25 08" },
+        "expect": [
+          {
+            "method": "sendMessage",
+            "payload": {
+              "text": "Please enter hours as numbers between 0 and 23."
+            }
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "/quiet with valid hours sets quiet hours",
+    "steps": [
+      {
+        "send": { "text": "/quiet 23 7" },
+        "expect": [
+          {
+            "method": "sendMessage",
+            "payload": {
+              "text": "Quiet hours set: 23:00–07:00. Alerts will be suppressed during this window."
+            }
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "Quiet hours menu button shows current and usage",
+    "steps": [
+      {
+        "send": { "callback": "quiet:show" },
+        "expect": [
+          {
+            "method": "editMessageText",
+            "payload": {
+              "text": "Current quiet hours: 22:00–08:00\n\nTo set quiet hours, type:\n/quiet 22 08\n\nThis suppresses alerts from 22:00 to 08:00."
+            }
+          }
+        ]
       }
     ]
   }

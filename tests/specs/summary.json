@@ -1,19 +1,65 @@
 [
   {
-    "name": "/summary",
+    "name": "/summary without arguments shows current and usage",
     "steps": [
       {
+        "send": { "text": "/summary" },
         "expect": [
           {
             "method": "sendMessage",
             "payload": {
-              "text": "Set the time for the daily morning summary"
+              "text": "Current summary time: 09:00\n\nTo set your daily summary time, type:\n/summary 09\n/summary 7\n\nYou'll receive a morning summary at that hour."
             }
           }
-        ],
-        "send": {
-          "text": "/summary"
-        }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "/summary with invalid hour shows error",
+    "steps": [
+      {
+        "send": { "text": "/summary 25" },
+        "expect": [
+          {
+            "method": "sendMessage",
+            "payload": {
+              "text": "Please enter a valid hour between 0 and 23."
+            }
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "/summary with valid hour sets summary time",
+    "steps": [
+      {
+        "send": { "text": "/summary 7" },
+        "expect": [
+          {
+            "method": "sendMessage",
+            "payload": {
+              "text": "Daily summary set for 07:00."
+            }
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "Summary menu button shows current and usage",
+    "steps": [
+      {
+        "send": { "callback": "summary:show" },
+        "expect": [
+          {
+            "method": "editMessageText",
+            "payload": {
+              "text": "Current summary time: 09:00\n\nTo set your daily summary time, type:\n/summary 09\n/summary 7\n\nYou'll receive a morning summary at that hour."
+            }
+          }
+        ]
       }
     ]
   }

@@ -1,19 +1,65 @@
 [
   {
-    "name": "/setpercent",
+    "name": "/setpercent without arguments shows usage",
     "steps": [
       {
+        "send": { "text": "/setpercent" },
         "expect": [
           {
             "method": "sendMessage",
             "payload": {
-              "text": "Set a percentage-change alert for a coin"
+              "text": "To set a percentage alert, type:\n/setpercent BTC 5\n/setpercent ETH -10"
             }
           }
-        ],
-        "send": {
-          "text": "/setpercent"
-        }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "/setpercent with zero shows error",
+    "steps": [
+      {
+        "send": { "text": "/setpercent BTC 0" },
+        "expect": [
+          {
+            "method": "sendMessage",
+            "payload": {
+              "text": "Please enter a valid percentage (positive or negative)."
+            }
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "/setpercent for coin not on watchlist shows not found",
+    "steps": [
+      {
+        "send": { "text": "/setpercent BTC 5" },
+        "expect": [
+          {
+            "method": "sendMessage",
+            "payload": {
+              "text": "BTC isn't on your watchlist. Add it first with /add BTC."
+            }
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "% Alert menu button shows usage",
+    "steps": [
+      {
+        "send": { "callback": "setpercent:show" },
+        "expect": [
+          {
+            "method": "editMessageText",
+            "payload": {
+              "text": "To set a percentage alert, type:\n/setpercent BTC 5\n/setpercent ETH -10"
+            }
+          }
+        ]
       }
     ]
   }

@@ -1,19 +1,49 @@
 [
   {
-    "name": "/add",
+    "name": "/add without arguments shows usage",
     "steps": [
       {
+        "send": { "text": "/add" },
         "expect": [
           {
             "method": "sendMessage",
             "payload": {
-              "text": "Add a coin to the watchlist"
+              "text": "To add a coin, type:\n/add BTC\n/add ETH\n/add SOL"
             }
           }
-        ],
-        "send": {
-          "text": "/add"
-        }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "/add with unknown ticker shows suggestions",
+    "steps": [
+      {
+        "send": { "text": "/add XYZXYZ" },
+        "expect": [
+          {
+            "method": "sendMessage",
+            "payload": {
+              "text": "Couldn't find a coin with ticker \"XYZXYZ\".\nCheck the ticker symbol and try again."
+            }
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "Add coin menu button shows usage",
+    "steps": [
+      {
+        "send": { "callback": "add:show" },
+        "expect": [
+          {
+            "method": "editMessageText",
+            "payload": {
+              "text": "To add a coin, type:\n/add BTC\n/add ETH\n/add SOL"
+            }
+          }
+        ]
       }
     ]
   }

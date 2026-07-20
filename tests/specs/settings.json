@@ -1,19 +1,33 @@
 [
   {
-    "name": "/settings",
+    "name": "/settings shows empty watchlist and defaults",
     "steps": [
       {
+        "send": { "text": "/settings" },
         "expect": [
           {
             "method": "sendMessage",
             "payload": {
-              "text": "Show current alert settings and quiet hours"
+              "text": "⚙️ Your settings:\n\nWatchlist: empty — tap ➕ Add coin to add one.\n\nQuiet hours: 22:00–08:00\nDaily summary: 09:00"
             }
           }
-        ],
-        "send": {
-          "text": "/settings"
-        }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "Settings menu button shows settings",
+    "steps": [
+      {
+        "send": { "callback": "settings:show" },
+        "expect": [
+          {
+            "method": "editMessageText",
+            "payload": {
+              "text": "⚙️ Your settings:\n\nWatchlist: empty — tap ➕ Add coin to add one.\n\nQuiet hours: 22:00–08:00\nDaily summary: 09:00"
+            }
+          }
+        ]
       }
     ]
   }
