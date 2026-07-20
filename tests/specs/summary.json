@@ -1,0 +1,20 @@
+[
+  {
+    "name": "/summary",
+    "steps": [
+      {
+        "expect": [
+          {
+            "method": "sendMessage",
+            "payload": {
+              "text": "Set the time for the daily morning summary"
+            }
+          }
+        ],
+        "send": {
+          "text": "/summary"
+        }
+      }
+    ]
+  }
+]
