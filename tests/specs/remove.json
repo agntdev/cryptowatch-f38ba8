@@ -1,19 +1,49 @@
 [
   {
-    "name": "/remove",
+    "name": "/remove on empty watchlist shows empty state",
     "steps": [
       {
+        "send": { "text": "/remove" },
         "expect": [
           {
             "method": "sendMessage",
             "payload": {
-              "text": "Remove a coin from the watchlist"
+              "text": "Your watchlist is empty — tap ➕ Add coin to add one."
             }
           }
-        ],
-        "send": {
-          "text": "/remove"
-        }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "/remove with unknown ticker shows not found",
+    "steps": [
+      {
+        "send": { "text": "/remove BTC" },
+        "expect": [
+          {
+            "method": "sendMessage",
+            "payload": {
+              "text": "BTC isn't on your watchlist."
+            }
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "Remove coin menu button shows list",
+    "steps": [
+      {
+        "send": { "callback": "remove:show" },
+        "expect": [
+          {
+            "method": "editMessageText",
+            "payload": {
+              "text": "Your watchlist is empty — tap ➕ Add coin to add one."
+            }
+          }
+        ]
       }
     ]
   }

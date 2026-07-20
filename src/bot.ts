@@ -2,11 +2,34 @@ import { Composer } from "grammy";
 import { readdirSync } from "node:fs";
 import { createBot, type BotContext } from "./toolkit/index.js";
 
-// The per-chat session shape (ephemeral conversation state only). Extend as the
-// bot grows. Durable domain data must NOT live here — use the toolkit's
-// persistent storage (see AGENTS.md).
+// The per-chat session shape. In production (Redis-backed), this IS the durable
+// store for user data. Each private chat = one user's data.
 export interface Session {
-  // example: step?: "awaiting_amount";
+  step?: string;
+  watchlist: WatchlistItem[];
+  quietHoursStart: string;
+  quietHoursEnd: string;
+  summaryTime: string;
+  lastKnownPrices: Record<string, number>;
+  cooldownState: Record<string, number>;
+}
+
+export interface WatchlistItem {
+  ticker: string;
+  coinId: string;
+  priceThreshold?: number;
+  percentThreshold?: number;
+}
+
+export function initialSession(): Session {
+  return {
+    watchlist: [],
+    quietHoursStart: "22:00",
+    quietHoursEnd: "08:00",
+    summaryTime: "09:00",
+    lastKnownPrices: {},
+    cooldownState: {},
+  };
 }
 
 export type Ctx = BotContext<Session>;
@@ -19,7 +42,7 @@ export type Ctx = BotContext<Session>;
  */
 export async function buildBot(token: string) {
   const bot = createBot<Session>(token, {
-    initial: () => ({}),
+    initial: initialSession,
   });
 
   const dir = new URL("./handlers/", import.meta.url);
